@@ -25,8 +25,12 @@ See projekt on lihtne lennupiletite broneerimisrakendus, mis võimaldab kasutaja
    git clone https://github.com/MedvedEE/CGI_SUVI2025_Kullamae
    cd CGI_SUVI2025_Kullamae
    ```
+2. **NodeJS paigaldus**
 
-2. **Paigalda sõltuvused**
+1. Laadi alla ja paigalda(Windows/Linux) [Node.js](https://nodejs.org/en/download)
+
+
+3. **Paigalda sõltuvused**
 
    ```bash
    cd frontend
@@ -74,6 +78,7 @@ sudo apt update
 sudo apt install gradle
 gradle -v
 ```
+
 
 **NB!** Linuxis võib apt-ga installimine tekitada probleeme!
 Kui käivitamisel viskab gradle veateate, siis lahendus on allpool.
