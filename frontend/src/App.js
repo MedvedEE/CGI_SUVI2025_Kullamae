@@ -4,28 +4,36 @@ import axios from "axios";
 const API_URL = "http://localhost:8080/flights";
 
 function App() {
+  // Lennuandmete olek
   const [flights, setFlights] = useState([]);
   const [selectedFlight, setSelectedFlight] = useState(null);
+  
+  // Kasutaja istekoha eelistused
   const [preferences, setPreferences] = useState({
     window: false,
     extraLegroom: false,
     nearExit: false,
   });
+  
+  // Soovitatud istekoht ja broneeringu sõnum
   const [recommendedSeat, setRecommendedSeat] = useState(null);
   const [reservationMessage, setReservationMessage] = useState("");
 
+  // Laadi lennuandmed serverist, kui komponent laetakse
   useEffect(() => {
     axios.get(API_URL)
       .then(response => setFlights(response.data))
       .catch(error => console.error("Error fetching flights:", error));
   }, []);
 
+  // Istekoha soovitamise funktsioon
   const recommendSeat = () => {
     if (!selectedFlight) {
       alert("Palun vali lend enne istekoha soovitamist.");
       return;
     }
 
+    // Näidiskohad (tavaliselt tuleks serverist pärida)
     const seats = [
       { number: "1A", window: true, extraLegroom: false, nearExit: false },
       { number: "2B", window: false, extraLegroom: true, nearExit: false },
@@ -33,15 +41,18 @@ function App() {
       { number: "4D", window: false, extraLegroom: true, nearExit: true }
     ];
 
+    // Leia esimene iste, mis vastab kasutaja eelistustele
     const bestSeat = seats.find(seat =>
       (preferences.window && seat.window) ||
       (preferences.extraLegroom && seat.extraLegroom) ||
       (preferences.nearExit && seat.nearExit)
     );
 
+    // Kui sobivat kohta ei leitud, vali esimene iste
     setRecommendedSeat(bestSeat || seats[0]);
   };
 
+  // Istekoha broneerimise funktsioon
   const bookSeat = () => {
     if (!selectedFlight || !recommendedSeat) {
       alert("Palun vali lend ja istekoht enne broneerimist.");
@@ -60,6 +71,7 @@ function App() {
     <div style={{ padding: "20px", maxWidth: "600px", margin: "auto" }}>
       <h1 style={{ fontSize: "24px", fontWeight: "bold" }}>Lennuplaan</h1>
 
+      {/* Lennuloend */}
       <h2 style={{ fontSize: "18px", marginTop: "20px" }}>Lennud:</h2>
       <ul>
         {flights.map(flight => (
@@ -82,6 +94,7 @@ function App() {
         ))}
       </ul>
 
+      {/* Kui lend on valitud, kuva istme eelistused ja soovitus */}
       {selectedFlight && (
         <>
           <h2 style={{ fontSize: "18px", marginTop: "20px" }}>Istekoha eelistused:</h2>
@@ -109,6 +122,7 @@ function App() {
             </label>
           </div>
 
+          {/* Soovita istekohta nupp */}
           <button
             onClick={recommendSeat}
             style={{
@@ -123,12 +137,14 @@ function App() {
             Soovita istekohta
           </button>
 
+          {/* Kuva soovitatud istekoht */}
           {recommendedSeat && (
             <p style={{ marginTop: "10px", fontSize: "16px" }}>
               Soovitatud istekoht: <strong>{recommendedSeat.number}</strong>
             </p>
           )}
 
+          {/* Broneeri istekoht nupp */}
           <button
             onClick={bookSeat}
             style={{
@@ -143,6 +159,7 @@ function App() {
             Broneeri istekoht
           </button>
 
+          {/* Kuva broneeringu olek */}
           {reservationMessage && (
             <p style={{ marginTop: "10px", fontSize: "16px", fontWeight: "bold" }}>
               {reservationMessage}

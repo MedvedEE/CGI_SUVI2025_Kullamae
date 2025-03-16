@@ -21,6 +21,14 @@ class Controller {
             new Flight(3, "Helsinki", "Berlin", "2025-03-15", "08:30", 180.0)
     ));
     private final Map<Integer, String> reservations = new HashMap<>();
+    /**
+     * Tagastab filtritud lennuplaanid.
+     * @param destination - sihtkoht (valikuline)
+     * @param date - kuupäev (valikuline)
+     * @param time - aeg (valikuline)
+     * @param maxPrice - maksimaalne hind (valikuline)
+     * @return - sobivad lennud
+     */
     @GetMapping
     public List<Flight> getFlights(
             @RequestParam(required = false) String destination,
@@ -34,6 +42,11 @@ class Controller {
                 .filter(f -> (maxPrice == null || f.getPrice() <= maxPrice))
                 .collect(Collectors.toList());
     }
+        /**
+     * Broneerib istekoha lennule.
+     * @param reservation - broneeringu andmed (lennu ID ja istekoht)
+     * @return - broneeringu staatus
+     */
     @PostMapping("/reserve")
     public String reserveSeat(@RequestBody Reservation reservation) {
         if (reservations.containsKey(reservation.getFlightId())) {

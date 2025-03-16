@@ -13,7 +13,10 @@ public class SeatController {
     public SeatController() {
         seats = generateSeatPlan();
     }
-
+    /**
+     * Loob lennuki isteplaani koos juhuslike broneeringutega.
+     * @return - istekohtade nimekiri
+     */
     private List<Seat> generateSeatPlan() {
         List<Seat> seatList = new ArrayList<>();
         String[] seatLetters = {"A", "B", "C", "D", "E", "F"};
@@ -34,7 +37,14 @@ public class SeatController {
         }
         return seatList;
     }
-
+    /**
+     * Soovitab kasutajale istekohti vastavalt eelistustele.
+     * @param count - soovitud kohtade arv
+     * @param window - kas eelistada aknaäärset kohta (valikuline)
+     * @param extraLegroom - kas eelistada lisajalaruumiga kohta (valikuline)
+     * @param nearExit - kas eelistada väljapääsu lähedal olevat kohta (valikuline)
+     * @return - soovitatud vabad istekoha(d)
+     */
     @GetMapping("/recommend")
     public List<Seat> recommendSeats(@RequestParam int count,
                                      @RequestParam(required = false) Boolean window,
